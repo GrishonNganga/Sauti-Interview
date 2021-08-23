@@ -9,9 +9,11 @@ export const WatchComponent = () => {
 
   const { user, canAuthenticate } = useContext(AuthContext);
   const [userValue] = user;
-  const [ setCanAuthenticate] = canAuthenticate;
+  const [ ,setCanAuthenticate] = canAuthenticate;
 
+  console.log(id)
   const videoData = getVideoData(id);
+  console.log(videoData);
   const [videoExists] = useState(videoData ? true: false);
   const [{...videoObject }, setVideoToWatch] = useState((videoExists && videoData) || {});
   const [videoLikes] = useState((videoExists && getVideoLikes(id)) || []);
