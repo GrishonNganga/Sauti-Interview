@@ -41,19 +41,19 @@ export const Login = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setState((prevState) => ({ ...prevState, ["isLoading"]: true }));
+    setState((prevState) => ({ ...prevState, "isLoading": true }));
     if (!inputValid(email) || !inputValid(password)) {
       setState((prevState) => ({
         ...prevState,
-        ["isLoading"]: false,
-        ["hasError"]: true,
+        "isLoading": false,
+        "hasError": true,
       }));
 
     } else {
       setState((prevState) => ({
         ...prevState,
-        ["isLoading"]: true,
-        ["hasError"]: false,
+        "isLoading": true,
+        "hasError": false,
       }));
       setTimeout(() => {
         const user = authUser({
@@ -65,8 +65,8 @@ export const Login = ({
         }else{
           setState((prevState) => ({
             ...prevState,
-            ["isLoading"]: false,
-            ["hasError"]: true,
+            "isLoading": false,
+            "hasError": true,
           }));
         }
                 
@@ -86,7 +86,7 @@ export const Login = ({
         <div className="modal-content text-left">
           <div className="flex justify-between">
             <div className="hidden md:flex items-center w-full h-auto bg-purple-50">
-              <img src={perform} />
+              <img src={perform} alt=""/>
             </div>
             <div className="w-full">
               <div className="flex justify-end p-5 pb-3">
@@ -211,7 +211,7 @@ export const Signup = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setState((prevState) => ({ ...prevState, ["isLoading"]: true }));
+    setState((prevState) => ({ ...prevState, "isLoading": true }));
     if (
       !inputValid(name) ||
       !inputValid(email) ||
@@ -221,14 +221,14 @@ export const Signup = ({
     ) {
       setState((prevState) => ({
         ...prevState,
-        ["isLoading"]: false,
-        ["hasError"]: true,
+        "isLoading": false,
+        "hasError": true,
       }));
     } else {
       setState((prevState) => ({
         ...prevState,
-        ["isLoading"]: true,
-        ["hasError"]: false,
+        "isLoading": true,
+        "hasError": false,
       }));
       setTimeout(() => {
         const user = createUser({
@@ -253,7 +253,7 @@ export const Signup = ({
         <div className="modal-content text-left">
           <div className="flex justify-between">
             <div className="hidden md:flex items-center w-full h-auto bg-purple-50">
-              <img src={music} />
+              <img src={music} alt=""/>
             </div>
             <div className="w-full">
               <div className="flex justify-end p-5 pb-3">

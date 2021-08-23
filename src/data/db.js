@@ -98,7 +98,7 @@ export const getUserUploads = (userId) =>{
   const allUsers = getAllUsers();
   let uploadList;
   for (let i = 0; i < allUsers.length; i++) {
-    if (allUsers[i].id == userId){
+    if (allUsers[i].id === userId){
       uploadList = allUsers[i].uploads;
       break;
     }
@@ -127,7 +127,7 @@ export const getSortedVids = (criteria) => {
 
 export const getVideoData = (videoId) => {
   const allVids = getAllUploads();
-  return allVids.find(({id}) => id == videoId) || null;
+  return allVids.find(({id}) => id === videoId) || null;
 }
 
 const refreshDB = (table, data) => {
@@ -162,7 +162,7 @@ const getAllUploads = () => {
     const querriedUploads = uploaded.filter(upload => upload.userId )
     .map((upload) =>{
       let user = users.find(({id}) => id === upload.userId)
-      return {...upload, ["user"]:{["name"]: user.name}}
+      return {...upload, "user":{"name": user.name}}
     });
 
     return querriedUploads
@@ -203,7 +203,7 @@ export const likeVideo = (videoId, userId) => {
 
   let videoObject = getVideoData(videoId);
   const allVidsLikes = getAllVideoLikes();
-  if (allVidsLikes.length == 0 || !currentVidLikes){
+  if (allVidsLikes.length === 0 || !currentVidLikes){
     allVidsLikes.push({[videoId]:[userId]})
     videoObject.likes++;
     const allVideosUploaded = getAllUploads()
@@ -284,7 +284,7 @@ export const dislikeVideo = (videoId, userId) => {
 
   let videoObject = getVideoData(videoId);
   const allVidsDislikes = getAllVideoDislikes();
-  if (allVidsDislikes.length == 0 || !currentVidDislikes){
+  if (allVidsDislikes.length === 0 || !currentVidDislikes){
     allVidsDislikes.push({[videoId]:[userId]})
     videoObject.dislikes++;
     const allVideosUploaded = getAllUploads()
@@ -326,7 +326,7 @@ const unDislikeVideo = (videoId, userId)=>{
   const newdisLikeList = allVideoDislikes.map((vid)=>{
     
     for(const prop in vid){
-      if (prop == parseInt(videoId)){
+      if (prop === parseInt(videoId)){
         vid[parseInt(videoId)] = newCurrentVideoDislikes
         break;
       }
@@ -353,7 +353,7 @@ const unlikeVideo = (videoId, userId)=>{
   const newlikeList = allVideoLikes.map((vid)=>{
 
     for(const prop in vid){
-      if (prop == parseInt(videoId)){
+      if (prop === parseInt(videoId)){
         vid[parseInt(videoId)] = newCurrentVideoLikes
         break;
       }

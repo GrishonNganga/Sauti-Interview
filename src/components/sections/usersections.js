@@ -35,7 +35,7 @@ export const UnAuthenticatedUser = ({ invert }) => {
 
 export const AuthenticatedUser = () => {
   const { user} = useContext(AuthContext);
-  const [userValue, setUser] = user;
+  const [ setUser] = user;
 
   const logoutAuthUser = () => {
     logoutUser()
@@ -45,7 +45,7 @@ export const AuthenticatedUser = () => {
     <div className="flex items-center p-2 mr-3 cursor-pointer" onClick={logoutAuthUser}>
       <div>
         <div>
-          <img src={profile} className="w-12 " />
+          <img src={profile} className="w-12 " alt=""/>
         </div>
       </div>
     </div>

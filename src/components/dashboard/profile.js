@@ -63,7 +63,7 @@ export const ProfileComponent = () => {
         </div>
       </div>
       <div className="h-full">
-      {loadedComponent == "videos" ? <Videos/> : <Upload setLoadedComponent={setLoadedComponent}/>}
+      {loadedComponent === "videos" ? <Videos/> : <Upload setLoadedComponent={setLoadedComponent}/>}
       </div>
     </div>
   );

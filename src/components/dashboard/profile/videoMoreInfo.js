@@ -28,7 +28,7 @@ export const VideoMoreInfo = ({ videoSrc, setLoadedComponent }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setState((prevState) => ({ ...prevState, ["isLoading"]: true }));
+    setState((prevState) => ({ ...prevState, "isLoading": true }));
     if (
       !inputValid(title) ||
       !inputValid(description) ||
@@ -37,14 +37,14 @@ export const VideoMoreInfo = ({ videoSrc, setLoadedComponent }) => {
     ) {
       setState((prevState) => ({
         ...prevState,
-        ["isLoading"]: false,
-        ["hasError"]: true,
+        "isLoading": false,
+        "hasError": true,
       }));
     } else {
       setState((prevState) => ({
         ...prevState,
-        ["isLoading"]: true,
-        ["hasError"]: false,
+        "isLoading": true,
+        "hasError": false,
       }));
       const thumbnailUrl = uploadThumbnail(imageSrc).then((response) => {
         return response;
@@ -59,7 +59,7 @@ export const VideoMoreInfo = ({ videoSrc, setLoadedComponent }) => {
 
         setState((prevState) => ({
           ...prevState,
-          ["isLoading"]: false,
+          "isLoading": false,
         }));
         saveUpload(thumbnail, vid);
       });
@@ -166,7 +166,7 @@ export const VideoMoreInfo = ({ videoSrc, setLoadedComponent }) => {
                       </label>
                     </div>
                     <div>
-                      <img src={imageSrc} className="w-28 h-16 object-cover" />
+                      <img src={imageSrc} className="w-28 h-16 object-cover" alt="" />
                     </div>
                   </div>
                   <div className="w-full flex justify-center pt-2">

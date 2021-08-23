@@ -49,6 +49,7 @@ export const DiscoverComponent = () => {
                   <img
                     className="w-full h-44 object-cover rounded"
                     src={vid.thumbnail}
+                    alt=""
                   />
                 </div>
                 <div className="flex justify-between text-xs font-semibold text-gray-500 mt-1">
@@ -61,7 +62,9 @@ export const DiscoverComponent = () => {
                       className="w-10 h-10 rounded-full object-cover"
                       src={
                         "https://res.cloudinary.com/dh5acw9p6/image/upload/v1629732438/sauti/be7wn8lzs2kgftrz0hcs.png"
+                        
                       }
+                      alt=""
                     />
                   </div>
                   <div className="flex flex-col ">

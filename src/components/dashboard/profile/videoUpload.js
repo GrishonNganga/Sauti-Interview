@@ -1,7 +1,4 @@
-import { useState, useRef } from "react";
-import { InputError } from "../../utils/errors";
-import { ButtonLoader } from "../../utils/loader";
-import { uploadThumbnail, uploadVideo } from "../../../data/api";
+import { useRef } from "react";
 
 export const VideoUpload = ({setVideoSrc, setLoadVideoComponent}) => {
   

@@ -9,13 +9,13 @@ export const WatchComponent = () => {
 
   const { user, canAuthenticate } = useContext(AuthContext);
   const [userValue] = user;
-  const [canAuthenticateValue, setCanAuthenticate] = canAuthenticate;
+  const [ setCanAuthenticate] = canAuthenticate;
 
   const videoData = getVideoData(id);
-  const [videoExists, setVideoExist] = useState(videoData ? true: false);
-  const [{...videoObject }, setVideoToWatch] = useState(videoExists && videoData || {});
-  const [videoLikes, setVideoLikes] = useState(videoExists && getVideoLikes(id) || []);
-  const [videoDislikes, setVideoDislikes] = useState(videoExists && getVideoDislikes(id) || []);
+  const [videoExists] = useState(videoData ? true: false);
+  const [{...videoObject }, setVideoToWatch] = useState((videoExists && videoData) || {});
+  const [videoLikes] = useState((videoExists && getVideoLikes(id)) || []);
+  const [videoDislikes] = useState((videoExists && getVideoDislikes(id)) || []);
   const [userLiked, setUserLiked] = useState(false)
   const [userDisliked, setUserDisliked] = useState(false)
 
@@ -26,7 +26,7 @@ export const WatchComponent = () => {
     if(userValue && videoExists && videoDislikes.includes(userValue.id)){
       setUserDisliked(true)
     }
-  })
+  },[userValue, videoExists, videoLikes, videoDislikes ])
 
   const userLikeVideo = () =>{
     if (!userValue){ setCanAuthenticate(true);  return; } 

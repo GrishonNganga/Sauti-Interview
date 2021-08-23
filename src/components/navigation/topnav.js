@@ -5,7 +5,7 @@ import { UnAuthenticatedUser, AuthenticatedUser } from "../sections/usersections
 
 export const TopNav = () => {
   const { user, canAuthenticate } = useContext(AuthContext);
-  const [userValue, setUser] = user;
+  const [userValue] = user;
   const [canAuthenticateValue, setCanAuthenticate] = canAuthenticate;
 
   const invert = () => {
