@@ -67,7 +67,7 @@ export const getLoggedInUser = () => {
   return null;
 };
 
-export const saveUserUpload = (user, videoObject) => {
+export const saveUserUpload = (user, videoObject) => { //Returns video uploaded by user on success. 
   const uploadToCreate = {
     id: getNextUploadID(),
     title: videoObject.title,
@@ -96,7 +96,7 @@ export const saveUserUpload = (user, videoObject) => {
   return uploadToCreate;
 };
 
-export const getUserUploads = (userId) =>{
+export const getUserUploads = (userId) =>{ //Returns videos uploaded by a user
   const allUsers = getAllUsers();
   let uploadList;
   for (let i = 0; i < allUsers.length; i++) {
@@ -116,7 +116,7 @@ export const getUserUploads = (userId) =>{
   }
 }
 
-export const getSortedVids = (criteria) => {
+export const getSortedVids = (criteria) => { //Returns videos from storage sorted based on predefined criteria
   const allVids = getAllUploads();
   if (criteria == "likes"){
     allVids.sort((a, b) =>{
@@ -127,12 +127,13 @@ export const getSortedVids = (criteria) => {
   return allVids
 }
 
-export const getVideoData = (videoId) => {
+export const getVideoData = (videoId) => { //Returns a video from storage
   const allVids = getAllUploads();
   return allVids.find(({id}) => id == videoId) || null;
 }
 
-const refreshDB = (table, data) => {
+const refreshDB = (table, data) => { // Nothing is returned
+  //Takes in a table to be made changes on && the new version of the table
   if (localStorage.getItem(table)) {
     localStorage.removeItem(table);
   }
@@ -149,11 +150,11 @@ const getAllUsers = () => {
   }
 };
 
-const getNextUploadID = () => {
+const getNextUploadID = () => { //Returns the next ID for use as PK.
   return getAllUploads().length + 1;
 };
 
-const getAllUploads = () => {
+const getAllUploads = () => { //Returns array of all all videos uploaded on storage
   const uploads = localStorage.getItem("uploads");
   if (uploads) {
     let uploaded = JSON.parse(uploads);
@@ -167,7 +168,8 @@ const getAllUploads = () => {
 
     return querriedUploads
   } else {
-
+    
+    //If user session is new -> Load starter videos
     refreshDB("uploads", JSON.stringify(uploadsFromInit))
     refreshDB("users", JSON.stringify(usersFromInit))
     return getAllUploads() ;
@@ -175,7 +177,7 @@ const getAllUploads = () => {
   }
 };
 
-export const getVideoLikes = (videoId) => {
+export const getVideoLikes = (videoId) => { //Returns array of the likes on video
   const allVidsLikes = getAllVideoLikes();
   if (allVidsLikes.length > 0) {
     
@@ -190,45 +192,49 @@ export const getVideoLikes = (videoId) => {
   }
 };
 
-export const likeVideo = (videoId, userId) => {
+export const likeVideo = (videoId, userId) => { //Returns array of the liked video and boolean of whether removed dislike [videoObj, false]
   
   const currentVidLikes = getVideoLikes(videoId)
   const currentVidDislikes = getVideoDislikes(videoId) || [];
   let toggledUnlikedValue = false
 
   if(currentVidDislikes.includes(userId)){
-    unDislikeVideo(videoId, userId);
-    toggledUnlikedValue = true
+    unDislikeVideo(videoId, userId, currentVidDislikes);
+    toggledUnlikedValue = true //Return true if there was a dislike prior and was removed
   }
 
   let videoObject = getVideoData(videoId);
   const allVidsLikes = getAllVideoLikes();
-  if (allVidsLikes.length == 0 || !currentVidLikes){
+
+  if (allVidsLikes.length == 0 || !currentVidLikes){ //No likes on storage && for the specific video
     allVidsLikes.push({[videoId]:[userId]})
-    videoObject.likes++;
+    videoObject.likes = videoObject.likes + 1;
     const allVideosUploaded = getAllUploads()
     const updatedVideosAfterLike = allVideosUploaded.map((video)=>{
-      if(video.id == videoId) return {...videoObject};
+      if(video.id == videoId) return videoObject;
       else{ return video}
     })
     refreshDB("videoLikes", JSON.stringify(allVidsLikes))
     refreshDB("uploads", JSON.stringify(updatedVideosAfterLike))
     return [videoObject, toggledUnlikedValue]
+
   }else{
+
+    if(currentVidLikes.includes(videoId)) {return;}
     currentVidLikes.push(userId)
-    const updatedLikes = allVidsLikes.map((vidLikes, idx, obj)=>{
-      for(const prop in vidLikes){
-        if(parseInt(prop) == videoId){
-          vidLikes[prop] = currentVidLikes
-          break;
-        }
+    const updatedLikes = allVidsLikes.map((videoLikes)=>{
+      if(videoId in videoLikes){
+        videoLikes[videoId] = currentVidLikes
+        return videoLikes
+      }else{
+        return videoLikes
       }
-      return vidLikes
     })
-    videoObject.likes++;
+
+    videoObject.likes = videoObject.likes + 1;
     const allVideosUploaded = getAllUploads()
     const updatedVideosAfterLike = allVideosUploaded.map((video)=>{
-      if(video.id == videoId) return  {...videoObject};
+      if(video.id == videoId) return  videoObject;
       else{return video}
     })
     refreshDB("videoLikes", JSON.stringify(updatedLikes))
@@ -237,7 +243,7 @@ export const likeVideo = (videoId, userId) => {
   }
 }
 
-export const getAllVideoLikes = () => {
+export const getAllVideoLikes = () => { //Returns array of objects containing {videoIdKey: array of video Dislikes} from storage 
   const allVidsLikes = localStorage.getItem("videoLikes");
   if (allVidsLikes) {
     return JSON.parse(allVidsLikes);
@@ -247,7 +253,7 @@ export const getAllVideoLikes = () => {
   }
 };
 
-export const getVideoDislikes = (videoId) => {
+export const getVideoDislikes = (videoId) => { //Returns array of a video's dislikes
   const allVidsDislikes = getAllVideoDislikes();
   if (allVidsDislikes.length > 0) {
     
@@ -261,7 +267,7 @@ export const getVideoDislikes = (videoId) => {
   }
 };
 
-export const getAllVideoDislikes = () => {
+export const getAllVideoDislikes = () => { //Returns array of objects containing {videoIdKey: array of video Likes} from storage 
   const allVidsDislikes = localStorage.getItem("videoDislikes");
   if (allVidsDislikes) {
     return JSON.parse(allVidsDislikes);
@@ -271,45 +277,49 @@ export const getAllVideoDislikes = () => {
   }
 };
 
-export const dislikeVideo = (videoId, userId) => {
+export const dislikeVideo = (videoId, userId) => { //Returns array of the disliked video and boolean of whether removed like [videoObj, false]
   
   const currentVidDislikes = getVideoDislikes(videoId)
   const currentVidLikes = getVideoLikes(videoId) || [];
   let toggledUnlikedValue = false
 
   if(currentVidLikes.includes(userId)){
-    unlikeVideo(videoId, userId);
+    unlikeVideo(videoId, userId, currentVidLikes);
     toggledUnlikedValue = true
   }
 
   let videoObject = getVideoData(videoId);
   const allVidsDislikes = getAllVideoDislikes();
+  
   if (allVidsDislikes.length == 0 || !currentVidDislikes){
     allVidsDislikes.push({[videoId]:[userId]})
-    videoObject.dislikes++;
+    videoObject.dislikes = videoObject.dislikes + 1;
     const allVideosUploaded = getAllUploads()
     const updatedVideosAfteDislLike = allVideosUploaded.map((video)=>{
-      if(video.id == videoId) return  {...videoObject};
+      if(video.id == videoId) return  videoObject;
       else{return video}
     })
     refreshDB("videoDislikes", JSON.stringify(allVidsDislikes))
     refreshDB("uploads", JSON.stringify(updatedVideosAfteDislLike))
     return [videoObject, toggledUnlikedValue]
+
   }else{
+    
+    if(currentVidDislikes.includes(videoId)){return;}
     currentVidDislikes.push(userId)
-    const updatedDislikes = allVidsDislikes.map((vidDislikes, idx, obj)=>{
-      for(const prop in vidDislikes){
-        if(parseInt(prop) == videoId){
-          vidDislikes[prop] = currentVidDislikes
-          break;
-        }
+    const updatedDislikes = allVidsDislikes.map((videoDislikes)=>{
+      if(videoId in videoDislikes){
+        videoDislikes[videoId] = currentVidDislikes
+        return videoDislikes
+      }else{
+        return videoDislikes
       }
-      return vidDislikes
     })
-    videoObject.dislikes++;
+
+    videoObject.dislikes = videoObject.dislikes + 1;
     const allVideosUploaded = getAllUploads()
     const updatedVideosAfterDislike = allVideosUploaded.map((video)=>{
-      if(video.id == videoId) return  {...videoObject};
+      if(video.id == videoId) return  videoObject;
       else{return video}
     })
     refreshDB("videoLikes", JSON.stringify(updatedDislikes))
@@ -318,55 +328,49 @@ export const dislikeVideo = (videoId, userId) => {
   }
 }
 
-const unDislikeVideo = (videoId, userId)=>{
-  const currentVideoDisikes = getVideoDislikes(videoId);
-  const newCurrentVideoDislikes = currentVideoDisikes.filter(dislike => dislike !== userId);
+const unDislikeVideo = (videoId, userId, videoDislikesAtTheTime)=>{ //Nothing returned (But refreshes the storage after execution)
+  const newCurrentVideoDislikes = videoDislikesAtTheTime.filter(dislike => dislike !== userId);
 
   const allVideoDislikes = getAllVideoDislikes();
   const newdisLikeList = allVideoDislikes.map((vid)=>{
-    
-    for(const prop in vid){
-      if (prop == parseInt(videoId)){
-        vid[parseInt(videoId)] = newCurrentVideoDislikes
-        break;
-      }
+    if(videoId in vid){
+      vid[parseInt(videoId)] = newCurrentVideoDislikes
+      return vid
+    }else{
+      return vid
     }
-    return vid
   });
   let videoObject = getVideoData(videoId);
-  videoObject.dislikes = ( videoObject.dislikes > 0 ? videoObject.dislikes-- : 0 );
+  videoObject.dislikes = videoObject.dislikes  > 0 ? videoObject.dislikes - 1 : 0;
 
   const allVideosUploaded = getAllUploads()
   const updatedVideosAfterUndislike = allVideosUploaded.map((video)=>{
-    if(video.id == videoId) return  {...videoObject};
-    else{return video}
+    if (video.id == videoId) {return videoObject;}
+    else {return video}
   })
   refreshDB("videoDislikes", JSON.stringify(newdisLikeList));
   refreshDB("uploads", JSON.stringify(updatedVideosAfterUndislike))
 }
 
-const unlikeVideo = (videoId, userId)=>{
-  const currentVideoLikes = getVideoLikes(videoId);
-  const newCurrentVideoLikes = currentVideoLikes.filter(like => like !== userId);
+const unlikeVideo = (videoId, userId, videoLikesAtTheTime)=>{ //Nothing returned (But refreshes the storage after execution)
+  const newCurrentVideoLikes = videoLikesAtTheTime.filter(like => like !== userId);
 
   const allVideoLikes = getAllVideoLikes();
   const newlikeList = allVideoLikes.map((vid)=>{
-
-    for(const prop in vid){
-      if (prop == parseInt(videoId)){
-        vid[parseInt(videoId)] = newCurrentVideoLikes
-        break;
-      }
+    if(videoId in vid){
+      vid[parseInt(videoId)] = newCurrentVideoLikes
+      return vid
+    }else{
+      return vid
     }
-
-    return vid
   });
+
   let videoObject = getVideoData(videoId);
-  videoObject.likes = ( videoObject.likes > 0 ? videoObject.likes-- : 0 );
+  videoObject.likes = videoObject.likes  > 0 ? videoObject.likes - 1 : 0;
 
   const allVideosUploaded = getAllUploads()
   const updatedVideosAfterUnlike = allVideosUploaded.map((video)=>{
-    if(video.id == videoId) return  {...videoObject};
+    if(video.id == videoId) return  videoObject;
     else{ return video; }
   })
 

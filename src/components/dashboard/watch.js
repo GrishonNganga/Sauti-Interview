@@ -14,8 +14,8 @@ export const WatchComponent = () => {
   const videoData = getVideoData(id);
   const [videoExists] = useState(videoData ? true: false);
   const [{...videoObject }, setVideoToWatch] = useState((videoExists && videoData) || {});
-  const [videoLikes] = useState((videoExists && getVideoLikes(id)) || []);
-  const [videoDislikes] = useState((videoExists && getVideoDislikes(id)) || []);
+  const [videoLikes, setVideoLikes] = useState((videoExists && getVideoLikes(id)) || []);
+  const [videoDislikes, setVideoDislikes] = useState((videoExists && getVideoDislikes(id)) || []);
   const [userLiked, setUserLiked] = useState(false)
   const [userDisliked, setUserDisliked] = useState(false)
 
@@ -31,14 +31,14 @@ export const WatchComponent = () => {
   const userLikeVideo = () =>{
     if (!userValue){ setCanAuthenticate(true);  return; } 
     if(!userLiked){
-      const [updatedVideo, toggledDislike] = likeVideo(videoObject.id, userValue.id)
+      const [updatedVideo] = likeVideo(videoObject.id, userValue.id)
       if(updatedVideo){
-        setUserLiked(prevState=> !prevState)
-        if(toggledDislike){
-          setUserDisliked(false)
-        } 
-
+        setUserLiked(true)
+        setUserDisliked(false)
+        setVideoLikes(getVideoLikes(videoObject.id) || [])
+        setVideoDislikes(getVideoDislikes(videoObject.id) || [])
         setVideoToWatch(updatedVideo)
+        
       }
     }
   }
@@ -46,13 +46,14 @@ export const WatchComponent = () => {
   const userDislikeVideo = () =>{
     if (!userValue){ setCanAuthenticate(true);  return; } 
     if(!userDisliked){
-      const [updatedVideo, toggledLike] = dislikeVideo(videoObject.id, userValue.id)
+      const [updatedVideo] = dislikeVideo(videoObject.id, userValue.id)
       if(updatedVideo){
-        setUserDisliked(prevState=>!prevState) 
-        if(toggledLike){
-          setUserLiked(false)
-        }
+        setUserDisliked(true) 
+        setUserLiked(false)
+        setVideoDislikes(getVideoDislikes(videoObject.id) || [])
+        setVideoLikes(getVideoLikes(videoObject.id) || [])
         setVideoToWatch(updatedVideo)
+        
       }
     }
   }
