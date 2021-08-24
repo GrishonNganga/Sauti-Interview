@@ -10,8 +10,8 @@ export const DiscoverComponent = () => {
     setVids(pulledVids);
   }, []);
   return (
-    <div className="flex flex-col p-6 px-8 text-white">
-      <div className="flex space-x-3 items-center">
+    <div className="flex flex-col p-8 text-white md:pl-32 ">
+      <div className="flex space-x-3 items-center pt-12">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"

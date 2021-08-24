@@ -11,7 +11,7 @@ export const LeftNav = () => {
   const [userValue] = user;
 
   return (
-    <div className="flex flex-col space-y-4 p-5 border-r border-gray-700 h-full">
+    <div className="hidden md:flex flex-col space-y-4 p-5 border-r border-gray-700 h-full fixed z-50 bg-black">
       <div className="pb-8 px-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"

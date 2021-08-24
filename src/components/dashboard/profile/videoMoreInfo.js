@@ -98,10 +98,10 @@ export const VideoMoreInfo = ({ videoSrc, setLoadedComponent }) => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="w-11/12 flex justify-center ">
-        <div className="w-3/5 flex justify-center ">
-          <div className="w-3/4">
+    <div className="w-full flex justify-center md:pl-8">
+      <div className="w-full md:w-11/12 flex flex-col md:flex-row flex-reverse justify-center ">
+        <div className="w-full md:w-3/5 flex justify-center ">
+          <div className="w-full md:w-3/4">
             <div className="p-4">
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col space-y-4">
@@ -187,7 +187,7 @@ export const VideoMoreInfo = ({ videoSrc, setLoadedComponent }) => {
             </div>
           </div>
         </div>
-        <div className="w-4/12 p-6">
+        <div className="w-full md:w-4/12 p-6">
           <video
             id="video"
             className="h-72 rounded"

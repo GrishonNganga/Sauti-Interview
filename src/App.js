@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {});
   return (
     <div>
-      <div className="w-screen h-screen bg-gray-900 p-4 pb-0">
+      <div className="w-screen h-screen bg-gray-900">
         <div className="bg-black rounded-xl rounded-b-none shadow-xl flex h-full w-full overflow-y-scroll no-scrollbar">
           <BrowserRouter>
             <LeftNav />

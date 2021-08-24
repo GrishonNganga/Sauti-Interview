@@ -159,8 +159,6 @@ const getAllUploads = () => {
     let uploaded = JSON.parse(uploads);
     const users = getAllUsers();
 
-    console.log(users)
-
     const querriedUploads = uploaded.filter(upload => upload.userId )
     .map((upload) =>{
       let user = users.find(({id}) => id == upload.userId)

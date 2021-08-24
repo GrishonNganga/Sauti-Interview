@@ -8,7 +8,7 @@ export const Videos = () => {
   const { user } = useContext(AuthContext);
   const [userValue] = user;
 
-  Cloudinary({ cloud_name: "dh5acw9p6" });
+  new Cloudinary({ cloud_name: "dh5acw9p6" });
   const [userVids, setUserVids] = useState(null);
 
   useEffect(() => {
@@ -20,7 +20,8 @@ export const Videos = () => {
     <div className="w-full h-full flex flex-col ">
       {userVids ? (
         userVids.map((vid) => (
-          <div key={vid.id} className="flex py-1 border-b border-gray-600 shadow-md">
+          <div>
+            <div key={vid.id} className="flex py-1 border-b border-gray-600 shadow-md">
             <div className="text-white p-4 pr-1">
               {<img className="w-48 h-32 rounded shadow-md object-cover" src={vid.thumbnail} alt="" />}
             </div>
@@ -69,9 +70,15 @@ export const Videos = () => {
               </div>
             </div>
           </div>
+          <div className="flex fixed bottom-0 bg-red-300 p-4 text-white flex justify-center">
+            <div>
+              Logout
+            </div>
+          </div>
+          </div>
         ))
       ) : (
-        <div className="text-white">Nada</div>
+        <div className="w-full h-full flex justify-center items-centertext-white">Nada</div>
       )}
     </div>
   );
