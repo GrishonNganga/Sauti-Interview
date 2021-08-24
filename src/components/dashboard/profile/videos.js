@@ -80,7 +80,7 @@ export const Videos = () => {
                         />
                       </svg>
                     </div>
-                    <div>{vid.likes}</div>
+                    <div>{vid.dislikes}</div>
                   </div>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export const Videos = () => {
                       />
                     </svg>
                   </div>
-                  <div>{vid.likes}</div>
+                  <div>{vid.dislikes}</div>
                 </div>
               </div>
             </div>
